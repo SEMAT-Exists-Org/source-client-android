@@ -1,8 +1,12 @@
+// Maim application logic
+
+
 // Init App
 var myApp = new Framework7({
     modalTitle: 'Framework7',
     // Enable Material theme
     material: true,
+    cache: false
 });
 
 // Expose Internal DOM library
@@ -10,9 +14,7 @@ var $$ = Dom7;
 
 // Add main view
 var mainView = myApp.addView('.view-main', {
-});
-// Add another view, which is in right panel
-var rightView = myApp.addView('.view-right', {
+    domCache: true
 });
 
 // Show/hide preloader for remote ajax loaded pages
@@ -413,6 +415,7 @@ myApp.onPageInit('notifications', function (page) {
 
 /* ===== Login screen page events ===== */
 myApp.onPageInit('login-screen-embedded', function (page) {
+    
     $$(page.container).find('.button').on('click', function () {
         var username = $$(page.container).find('input[name="username"]').val();
         var password = $$(page.container).find('input[name="password"]').val();
@@ -420,7 +423,15 @@ myApp.onPageInit('login-screen-embedded', function (page) {
             mainView.router.back();
         });
     });
+
+    // back
+    $$(page.container).find('.close-login-screen').on('click', function () {
+            mainView.router.back();
+    });
+
 });
+
+
 $$('.login-screen').find('.button').on('click', function () {
     var username = $$('.login-screen').find('input[name="username"]').val();
     var password = $$('.login-screen').find('input[name="password"]').val();
