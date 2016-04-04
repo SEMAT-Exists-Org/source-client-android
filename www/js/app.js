@@ -1,4 +1,5 @@
-// Maim application logic
+// Main application logic lives here
+// by @sauliuz
 
 
 // Init App
@@ -25,6 +26,8 @@ $$(document).on('ajaxStart', function (e) {
     }
     myApp.showIndicator();
 });
+
+
 $$(document).on('ajaxComplete', function (e) {
     if (e.detail.xhr.requestUrl.indexOf('autocomplete-languages.json') >= 0) {
         // Don't show preloader for autocomplete demo requests
@@ -35,10 +38,13 @@ $$(document).on('ajaxComplete', function (e) {
 
 // Callbacks for specific pages when it initialized
 /* ===== Modals Page events  ===== */
+
 myApp.onPageInit('modals', function (page) {
+    
     $$('.demo-alert').on('click', function () {
         myApp.alert('Hello!');
     });
+    
     $$('.demo-confirm').on('click', function () {
         myApp.confirm('Are you feel good today?', function () {
             myApp.alert('Great!');
