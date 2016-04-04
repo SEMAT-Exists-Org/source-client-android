@@ -22,9 +22,20 @@ var $$ = Dom7;
 // Add main view
 var mainView = myApp.addView('.view-main');
 
-// Load page from about.html file to main View:
-mainView.router.loadPage('index.html');
 
+// If user is loged in, he goes directly to the projects page
+if (localStorage.w7Data != ''){
+    var user = JSON.parse(localStorage.w7Data);
+
+    // move to projects view
+    mainView.router.load({
+        url: 'projects.html',
+        context: {
+            name: ''+user.name,
+            email: ''+user.email
+        }
+    });
+}
 
 
 /// Pages ///
@@ -38,30 +49,6 @@ myApp.onPageInit('index', function (page) {
         myApp.alert('It appears your network connection is down. You need internet connection to use SEMAT App!');
     }
 
-    if (localStorage.w7Data) {
-
-        var user = JSON.parse(localStorage.w7Data);
-        console.log(localStorage.w7Data);
-
-
-        // TODO - check the timestamp for expiry
-
-        if (user.name && user.email ) {
-            
-            console.log(user.email);
-            console.log(user.name);
-
-            // move to projects view
-            mainView.router.loadPage({
-                url: 'no-projects.html',
-                context: {
-                    name: ''+user.name,
-                    email: ''+user.email
-                }
-            });
-        }
-
-    }
 });
 
 
@@ -203,6 +190,10 @@ myApp.onPageInit('register', function (page) {
 
     console.log('register page init');
 
+    if (!navigator.onLine) {
+        myApp.alert('It appears your network connection is down. You need internet connection to use SEMAT App!');
+    }
+
     // submit login
     $$('#submmit-register').on('click', function () {
         
@@ -265,10 +256,17 @@ myApp.onPageInit('register', function (page) {
 
                 }
 
-                // TODO (store the token in local cache)
+                // storing user data locally
+                var userData = {};
+                userData.name = responseJSON.name;
+                userData.email = responseJSON.email;
+                userData.token = responseJSON.token;
+                userData.timestamp = new Date().getTime();
+                localStorage.w7Data = JSON.stringify(userData);
+
 
                 mainView.router.load({
-                    url: 'no-projects.html',
+                    url: 'projects.html',
                     context: {
                         name: ''+responseJSON.name,
                         email: ''+responseJSON.email,
@@ -310,6 +308,15 @@ myApp.onPageInit('register', function (page) {
 myApp.onPageInit('projects', function (page) {
 
     console.log('projects page init');
+
+            // move user to home page  
+        mainView.router.load({
+            url: 'index.html',
+            context: {
+                logout: 'true'
+            }
+        });
+
 
     // submit logout
     $$('#user-logout').on('click', function () {

@@ -13,14 +13,17 @@
     <div class="content-block">
       <div class="chip center">
         <div class="chip-media bg-red">K</div>
-        <div class="chip-label center">Hi, {{name}}</div>
+        <div class="chip-label center">Hello, {{name}}</div>
       </div> 
     </div>
     {{/if}}
 
     {{#if newLogin}}
       <div style="color: green" class="content-block green">You have just loged in!</div>
-    {{/if}}    
+    {{/if}} 
+    {{#if newRegistration}}
+      <div style="color: green" class="content-block green">Your registration was successfull!</div>
+    {{/if}}   
 
     <div class="content-block">Projects you are associated with:</div>
     
