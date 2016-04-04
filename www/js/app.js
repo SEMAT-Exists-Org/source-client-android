@@ -31,7 +31,8 @@ if (localStorage.w7Data && localStorage.w7Data !== ''){
     mainView.router.load({
         url: 'projects.html',
         context: {
-            name: ''+user.name,
+            firstname: ''+user.firstname,
+            lastname: ''+user.lastname,
             email: ''+user.email
         }
     });
@@ -59,33 +60,6 @@ myApp.onPageInit('login', function (page) {
 
     if (!navigator.onLine) {
         myApp.alert('It appears your network connection is down. You need internet connection to use SEMAT App!');
-    }
-
-    if (localStorage.w7Data) {
-
-        var user = JSON.parse(localStorage.w7Data);
-        console.log('Storage data: '+localStorage.w7Data);
-
-
-        // TODO - check the timestamp for expiry
-
-        // move to projects view
-        mainView.router.load({
-            url: 'no-projects.html',
-            context: {
-                name: ''+user.name,
-                email: ''+user.email
-            }
-        });
-
-        if (user.name && user.email ) {
-            
-            console.log(user.email);
-            console.log(user.name);
-
-
-        }
-
     }
 
     // submit login
@@ -131,7 +105,6 @@ myApp.onPageInit('login', function (page) {
                 myApp.hideIndicator();
 
                 console.log('data: '+data);
-                console.log('status: '+status);
         
                 // better safe then sorry
                 try {
@@ -139,18 +112,20 @@ myApp.onPageInit('login', function (page) {
                     var responseJSON = JSON.parse(data);
 
                     
-                    if (!responseJSON.name || !responseJSON.token) { 
+                    if (!responseJSON.firstname || !responseJSON.token) { 
                         myApp.alert('Login was unsuccessful, we are experiencing internal errors, contact SEMAT team');
+                        return
                     }
 
                 } catch (e) {
                     myApp.alert('Login was unsuccessful, we are experiencing internal errors, contact SEMAT team');
-
+                    return
                 }
 
                 // storing user data locally
                 var userData = {};
-                userData.name = responseJSON.name;
+                userData.firstname = responseJSON.firstname;
+                userData.lastname = responseJSON.lastname;
                 userData.email = responseJSON.email;
                 userData.token = responseJSON.token;
                 userData.timestamp = new Date().getTime();
@@ -160,7 +135,8 @@ myApp.onPageInit('login', function (page) {
                 mainView.router.load({
                     url: 'projects.html',
                     context: {
-                        name: ''+responseJSON.name,
+                        firstname: ''+responseJSON.firstname,
+                        lastname: ''+responseJSON.lastname,
                         email: ''+responseJSON.email,
                         newLogin: 'true'
                     }
@@ -198,13 +174,14 @@ myApp.onPageInit('register', function (page) {
     $$('#submmit-register').on('click', function () {
         
 
-        var name = $$('#register-name').val();
+        var firstname = $$('#register-firstname').val();
+        var lastname = $$('#register-lastname').val();
         var email = $$('#register-email').val();
         var password = $$('#register-password').val();
 
         
         // simple validation for empty fields
-        if (!name || !email || !password){
+        if (!firstname || !lastname || !email || !password){
             
             myApp.alert('Please fill in all Login form fields');
             return;
@@ -213,7 +190,8 @@ myApp.onPageInit('register', function (page) {
         // build the http request
         var requestUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users/register';
         var postdata = {};
-        postdata.name = name;
+        postdata.firstname = firstname;
+        postdata.lastname = lastname;
         postdata.email = email;
         postdata.password = password;
 
@@ -247,8 +225,9 @@ myApp.onPageInit('register', function (page) {
                     var responseJSON = JSON.parse(data);
 
                     
-                    if (!responseJSON.name || !responseJSON.token) { 
+                    if (!responseJSON.firstname || !responseJSON.token) { 
                         myApp.alert('Registration was unsuccessful, we are experiencing internal errors, contact SEMAT team');
+                        return;
                     }
 
                 } catch (e) {
@@ -258,7 +237,8 @@ myApp.onPageInit('register', function (page) {
 
                 // storing user data locally
                 var userData = {};
-                userData.name = responseJSON.name;
+                userData.firstname = responseJSON.firstname;
+                userData.lastname = responseJSON.lastname;
                 userData.email = responseJSON.email;
                 userData.token = responseJSON.token;
                 userData.timestamp = new Date().getTime();
@@ -268,7 +248,8 @@ myApp.onPageInit('register', function (page) {
                 mainView.router.load({
                     url: 'projects.html',
                     context: {
-                        name: ''+responseJSON.name,
+                        firstname: ''+responseJSON.firstname,
+                        lastname: ''+responseJSON.lastname,
                         email: ''+responseJSON.email,
                         newRegistration: 'true'
                     }
@@ -290,9 +271,10 @@ myApp.onPageInit('register', function (page) {
 
                 } else {
 
-                    myApp.alert('Registration was unsuccessful, please verify your credentials and try again');
+                    myApp.alert('Registration was unsuccessful, please try again');
 
-                    $$('#register-name').val('');
+                    $$('#register-firstname').val('');
+                    $$('#register-lastname').val('');
                     $$('#register-email').val('');
                     $$('#register-password').val('');
 
