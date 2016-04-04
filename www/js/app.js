@@ -24,7 +24,7 @@ var mainView = myApp.addView('.view-main');
 
 
 // If user is loged in, he goes directly to the projects page
-if (localStorage.w7Data != ''){
+if (localStorage.w7Data !== ''){
     var user = JSON.parse(localStorage.w7Data);
 
     // move to projects view
