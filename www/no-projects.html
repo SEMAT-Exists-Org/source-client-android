@@ -15,7 +15,10 @@
         <div class="chip-media bg-red">K</div>
         <div class="chip-label center">Hi, {{name}}</div>
       </div> 
-    </div>   
+    </div>
+    {{#if newRegistration}}
+      <div style="color: green" class="content-block green">Your registration was successfull!</div>
+    {{/if}}
     <div class="content-block">Currentlly you do not have <br> any projects associated with your name</div>
     <br>
     <div class="content-block"><a href="createProject.html" class="button button-raised">New Project</a></div>
