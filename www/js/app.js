@@ -114,59 +114,8 @@ myApp.onPageInit('login', function (page) {
             }
 
         });
-
-
-        // // Ajax for communication with User service
-        // // HTTP communication responses are handled
-        // // in success / error callbacks
-        // $$.ajax({
-        //     url: query,
-        //     headers: {"X-Parse-Application-Id":applicationId,"X-Parse-REST-API-Key":restApiKey},
-        //     type: "GET",
-        //     // if successful response received (http 2xx)
-        //     success: function(data, textStatus ){
-                
-        //         // We have received response and can hide activity indicator
-        //         myApp.hideIndicator();
-            
-        //         data = JSON.parse(data);
-        //         if (!data.username) {return}
-
-        //         var username = data.username;       
-                
-        //         // Will pass context with retrieved user name 
-        //         // to welcome page. Redirect to welcome page
-        //         mainView.router.load({
-        //             template: Template7.templates.welcomeTemplate,
-        //             context: {
-        //                 name: username
-        //             }
-        //         });
-        //     },
-        //     error: function(xhr, textStatus, errorThrown){      
-        //         // We have received response and can hide activity indicator
-        //         myApp.hideIndicator();      
-        //         myApp.alert('Login was unsuccessful, please verify username and password and try again');
-
-        //         $$('#login-email').val('');
-        //         $$('#login-password').val('');
-        //     }
-        // });
-
-
     });
 
-    
-
-    // $$('.demo-reply').on('click', function () {
-    //     myApp.alert('Reply');
-    // });
-    // $$('.demo-mark').on('click', function () {
-    //     myApp.alert('Mark');
-    // });
-    // $$('.demo-forward').on('click', function () {
-    //     myApp.alert('Forward');
-    // });
 });
 
 
