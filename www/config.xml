@@ -11,10 +11,13 @@
     <preference name="webviewbounce" value="false" />
     <plugin name="cordova-plugin-whitelist" spec="1.2.0" />
 
+
     <!-- icons -->
-    <icon src="res/icons/android/icon-ldpi.png" platform="android" qualifier="ldpi" />
-	<icon src="res/icons/android/icon-mdpi.png" platform="android" qualifier="mdpi" />
-	<icon src="res/icons/android/icon-hdpi.png" platform="android" qualifier="hdpi" />
-	<icon src="res/icons/android/icon-xhdpi.png" platform="android" qualifier="xhdpi" />
+    <platform name="android">
+	    <icon src="res/icons/android/icon-ldpi.png" platform="android" qualifier="ldpi" />
+		  <icon src="res/icons/android/icon-mdpi.png" platform="android" qualifier="mdpi" />
+		  <icon src="res/icons/android/icon-hdpi.png" platform="android" qualifier="hdpi" />
+		  <icon src="res/icons/android/icon-xhdpi.png" platform="android" qualifier="xhdpi" />
+	  </platform>
 
 </widget>
