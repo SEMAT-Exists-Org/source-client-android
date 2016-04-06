@@ -11,9 +11,4 @@
     <preference name="webviewbounce" value="false" />
     <plugin name="cordova-plugin-whitelist" spec="1.2.0" />
 
-    <icon src="res/icons/android/icon-ldpi.png" density="ldpi" />
-    <icon src="res/icons/android/icon-mdpi.png" density="mdpi" />
-    <icon src="res/icons/android/icon-hdpi.png" density="hdpi" />
-    <icon src="res/icons/android/icon-xhdpi.png" density="xhdpi" />
-
 </widget>
