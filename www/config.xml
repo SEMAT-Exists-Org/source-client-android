@@ -10,7 +10,7 @@
     <preference name="disallowOverscroll" value="true" />
     <preference name="webviewbounce" value="false" />
 
-    <icon src="res/icons/android/icon.png" />
+    <!-- <icon src="res/icons/android/icon.png" /> -->
 
 	<!--  
     <platform name="android">
