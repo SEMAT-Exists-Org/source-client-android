@@ -9,16 +9,12 @@
     <preference name="fullscreen" value="false" />
     <preference name="disallowOverscroll" value="true" />
     <preference name="webviewbounce" value="false" />
-
-    <!-- <icon src="res/icons/android/icon.png" /> -->
-
-	<!--  
+ 
     <platform name="android">
-	  <icon src="res/icons/android/icon-ldpi.png" density="ldpi" />
-	  <icon src="res/icons/android/icon-mdpi.png" density="mdpi" />
-	  <icon src="res/icons/android/icon-hdpi.png" density="hdpi" />
-	  <icon src="res/icons/android/icon-xhdpi.png" density="xhdpi" />
+	  <icon src="res/android/ldpi.png" density="ldpi" />
+	  <icon src="res/android/mdpi.png" density="mdpi" />
+	  <icon src="res/android/hdpi.png" density="hdpi" />
+	  <icon src="res/android/xhdpi.png" density="xhdpi" />
      </platform>
-     -->
 
 </widget>
