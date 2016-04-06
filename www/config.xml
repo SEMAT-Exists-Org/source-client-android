@@ -6,12 +6,7 @@
     </description>
     <content src="index.html" />
     <access origin="*" />
-    <preference name="fullscreen" value="false" />
-    <preference name="disallowOverscroll" value="true" />
-    <preference name="webviewbounce" value="false" />
-    <plugin name="cordova-plugin-whitelist" spec="1.2.0" />
-
-
+    
     <!-- icons -->
     <platform name="android">
 	    <icon src="res/icons/android/icon-ldpi.png" platform="android" qualifier="ldpi" />
@@ -19,5 +14,11 @@
 		  <icon src="res/icons/android/icon-hdpi.png" platform="android" qualifier="hdpi" />
 		  <icon src="res/icons/android/icon-xhdpi.png" platform="android" qualifier="xhdpi" />
 	  </platform>
+    
+    
+    <preference name="fullscreen" value="false" />
+    <preference name="disallowOverscroll" value="true" />
+    <preference name="webviewbounce" value="false" />
+    <plugin name="cordova-plugin-whitelist" spec="1.2.0" />
 
 </widget>
