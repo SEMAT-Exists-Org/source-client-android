@@ -1,6 +1,9 @@
 // Main application logic lives here
 // by @sauliuz
 
+// These files will be bundled with below JS by Grunt
+// to produce bundle.js - for usage in app
+
 // constants used across the funcionality
 var userCacheTTL = '';
 var apiKey = '';
@@ -49,7 +52,6 @@ myApp.onPageInit('index', function (page) {
     if (!navigator.onLine) {
         myApp.alert('It appears your network connection is down. You need internet connection to use SEMAT App!');
     }
-
 });
 
 
