@@ -8,6 +8,10 @@
 var userCacheTTL = '';
 var apiKey = '';
 
+// services
+var projectServiceUrl = 'https://psdev-yt5t7wyhlwjcrfs3sldt4zm6-evals-dev.mbaas1.tom.redhatmobile.com/projects';
+var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
+
 
 // Framework7 stuff
 // Init App
@@ -56,7 +60,6 @@ myApp.onPageInit('index', function (page) {
     }
 });
 
-
 // Login page
 myApp.onPageInit('login', function (page) {
 
@@ -82,7 +85,7 @@ myApp.onPageInit('login', function (page) {
         }
 
         // build the http request
-        var requestUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users/login';
+        var requestUrl = userServiceUrl+'/login';
         var postdata = {};
         postdata.username = username;
         postdata.password = password;
@@ -103,19 +106,14 @@ myApp.onPageInit('login', function (page) {
             contentType: "application/json",
             data: JSON.stringify(postdata),
 
-            success: function(data, status, xhr){
-            
-                // we have received response and can hide activity indicator
-                myApp.hideIndicator();
+            success: function(data, status, xhr){        
 
-                console.log('data: '+data);
+                console.log('received user login data: '+data);
         
                 // better safe then sorry
                 try {
                     
-                    var responseJSON = JSON.parse(data);
-
-                    
+                    var responseJSON = JSON.parse(data);                    
                     if (!responseJSON.firstname || !responseJSON.token) { 
                         myApp.alert('Login was unsuccessful, we are experiencing internal errors, contact SEMAT team');
                         return
@@ -126,27 +124,79 @@ myApp.onPageInit('login', function (page) {
                     return
                 }
 
-                // storing user data locally
+                // preparing for storing user data locally
                 var userData = {};
                 userData.firstname = responseJSON.firstname;
                 userData.lastname = responseJSON.lastname;
                 userData.email = responseJSON.email;
                 userData.token = responseJSON.token;
+                userData.guid = responseJSON.guid;
                 userData.timestamp = new Date().getTime();
-                localStorage.w7Data = JSON.stringify(userData);
+
+                //localStorage.w7Data = JSON.stringify(userData);
+
+
+                // user is now loged in and validated
+                // we need to retrieve the project information for this user
+                // this means another request to the projects service
+                var requestUrl = projectServiceUrl+'/user/'+responseJSON.guid;     
                 
+                $$.ajax({
+                    url: requestUrl,
+                    type: "GET",
+                    contentType: "application/json",
+                    success: function(data, status, xhr){
+                        // debug
+                        console.log('received user projects data: '+data);
 
-                // move to projects view
-                mainView.router.load({
-                    url: 'projects.html',
-                    context: {
-                        firstname: ''+responseJSON.firstname,
-                        lastname: ''+responseJSON.lastname,
-                        email: ''+responseJSON.email,
-                        newLogin: 'true'
+                        // better safe then sorry
+                        try {                            
+                            var projectsJSON = JSON.parse(data);                    
+                            if (!projectsJSON.status ||  projectsJSON.status !== 'success') { 
+                                myApp.alert('Login was unsuccessful, we are experiencing internal errors, contact SEMAT team');
+                                return
+                            }
+                        } catch (e) {
+                            myApp.alert('Login was unsuccessful, we are experiencing internal errors, contact SEMAT team');
+                            return
+                        }
+
+                        // get the projects belonging to user
+                        var projectData = projectsJSON.projects;
+
+                        // finalise user data for local storage
+                        userData.projects = projectData || null;
+                        localStorage.w7Data = JSON.stringify(userData);
+                        // debug
+                        console.log('stored user object: '+JSON.stringify(userData));
+
+                        // about to do redirect to projects page
+                        // hide activity indicator
+                        myApp.hideIndicator();
+
+                        // move to projects view
+                        mainView.router.load({
+                            url: 'projects.html',
+                            context: {
+                                firstname: ''+userData.firstname,
+                                lastname: ''+userData.lastname,
+                                email: ''+userData.email,
+                                projects: userData.projects,
+                                newLogin: 'true'
+                            }
+                        });
+                    },
+                    error: function(xhr, status ){
+                        console.log('user projects error: '+status);
+
+                        // we have received response and can hide activity indicator
+                        myApp.hideIndicator();
+
+                        myApp.alert('Login was unsuccessful, please verify your credentials and try again');
+                        $$('#login-username').val('');
+                        $$('#login-password').val('');
                     }
-                });            
-
+                });          
             }, 
 
             error: function(xhr, status ){
@@ -163,7 +213,6 @@ myApp.onPageInit('login', function (page) {
 
         });
     });
-
 });
 
 // Login page
@@ -287,21 +336,26 @@ myApp.onPageInit('register', function (page) {
             }
         });
     });
-
 });
-
 
 // Projects page
 myApp.onPageInit('projects', function (page) {
 
     console.log('projects page init');
 
-    // we have to retrieve information about the user projects
+    // read local storage, see what projects
+    // user is assotiated with
+    // If user is loged in, he goes directly to the projects page
+    if (localStorage.w7Data && localStorage.w7Data !== ''){
+        
+        var user = JSON.parse(localStorage.w7Data);
+        console.log('found the user in local storage: '+localStorage.w7Data);
+    }
+    else {
+        // redirect to login
+    }
 
-
-    
-
-
+    // once user clicks on the specific project
 
     // submit logout
     $$('#user-logout').on('click', function () {
@@ -318,14 +372,12 @@ myApp.onPageInit('projects', function (page) {
         }); 
     });
 
-
     // new project page
     $$('#user-new-project').on('click', function () {
 
         // myApp.confirm('A new version is available. Do you want to load it right now?', function () {
         //         window.location.reload();
         // });
-
 
         // remove user details from local storage  
         mainView.router.load({
@@ -336,7 +388,6 @@ myApp.onPageInit('projects', function (page) {
         });                
             
     });
-
 });
 
 
