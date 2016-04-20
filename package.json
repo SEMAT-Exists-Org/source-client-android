@@ -26,6 +26,6 @@
     "node": ">=0.10.31",
     "npm": ">=2.0.0"
   },
-  "author": "Saul Zukauskas",
+  "author": "Saulius Zukauskas",
   "license": "MIT"
 }

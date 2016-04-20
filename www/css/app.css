@@ -1,3 +1,23 @@
+/* custom */
+
+.navbar-fixed.toolbar-fixed .page-content{
+  padding-top: 80px;
+}
+
+.item-media-profile img {
+    width: auto;
+    height: auto;
+    max-width: 55px;
+    border-radius: 50%;
+}
+
+.content-block-user {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    box-sizing: border-box;
+}
+
 .popover {
   width: 200px;
 }

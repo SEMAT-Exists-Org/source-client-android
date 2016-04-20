@@ -1,8 +1,8 @@
 # Mobile app code
 
-This repositary contains client application code for building mobile app with Cordova wrapper.
+This repositary contains client application HTML5 code for building mobile app binaries with Cordova wrapper.
 
-Android material design. Powered by Cordova.
+Using Android material design.
 
 ### Building mobile binary
 

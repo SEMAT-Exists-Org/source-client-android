@@ -41,6 +41,8 @@ if (localStorage.w7Data && localStorage.w7Data !== ''){
     });
 }
 
+// TODO: Declare globaly accessible funcions like logout
+
 
 /// Pages ///
 
@@ -132,6 +134,7 @@ myApp.onPageInit('login', function (page) {
                 userData.token = responseJSON.token;
                 userData.timestamp = new Date().getTime();
                 localStorage.w7Data = JSON.stringify(userData);
+                
 
                 // move to projects view
                 mainView.router.load({
@@ -293,13 +296,11 @@ myApp.onPageInit('projects', function (page) {
 
     console.log('projects page init');
 
-            // move user to home page  
-        mainView.router.load({
-            url: 'index.html',
-            context: {
-                logout: 'true'
-            }
-        });
+    // we have to retrieve information about the user projects
+
+
+    
+
 
 
     // submit logout

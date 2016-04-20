@@ -2,7 +2,6 @@
 <div data-page="projects" class="page">
   <div class="navbar">
     <div class="navbar-inner">
-      <div class="left"><a href="index.html" class="back link icon-only"><i class="icon icon-back"></i></a></div>
       <div class="center">Your projects</div>
       <div class="right"><a href="#" class="open-panel link icon-only"><i class="icon icon-bars"></i></a></div>
     </div>
@@ -10,22 +9,13 @@
   <div class="page-content">
 
     {{#if firstname}}
-    <div class="content-block">
+    <div class="content-block-user">
+      <div class="item-media-profile"><img src="img/gravatar.jpg" width="44" class=""></div>
       <div class="chip center">
-        <div class="chip-media bg-red">K</div>
         <div class="chip-label center">Hello, {{firstname}} {{lastname}}</div>
-      </div> 
+      </div>
     </div>
     {{/if}}
-
-    {{#if newLogin}}
-      <div style="color: green" class="content-block green">You have just loged in!</div>
-    {{/if}} 
-    {{#if newRegistration}}
-      <div style="color: green" class="content-block green">Your registration was successfull!</div>
-    {{/if}}   
-
-    <div class="content-block">Projects you are associated with:</div>
     
     <div class="list-block">
       <ul>
