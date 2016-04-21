@@ -8,9 +8,11 @@
 var userCacheTTL = '';
 var apiKey = '';
 
-// services
-var projectServiceUrl = 'https://psdev-yt5t7wyhlwjcrfs3sldt4zm6-evals-dev.mbaas1.tom.redhatmobile.com/projects';
-var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
+//var projectServiceUrl = 'https://psdev-yt5t7wyhlwjcrfs3sldt4zm6-evals-dev.mbaas1.tom.redhatmobile.com/projects';
+//var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
+
+var projectServiceUrl = 'http://localhost:8002/projects';
+var userServiceUrl = 'http://localhost:8001/users';
 
 
 // Framework7 stuff
@@ -30,25 +32,30 @@ var $$ = Dom7;
 var mainView = myApp.addView('.view-main');
 
 
+// General tasks on application startup //
+
 // If user is loged in, he goes directly to the projects page
 if (localStorage.w7Data && localStorage.w7Data !== ''){
-    var user = JSON.parse(localStorage.w7Data);
+    // debug
+    console.log('detected leged in user. moving to projects');
 
+    var user = JSON.parse(localStorage.w7Data);
     // move to projects view
     mainView.router.load({
         url: 'projects.html',
         context: {
             firstname: ''+user.firstname,
             lastname: ''+user.lastname,
-            email: ''+user.email
+            email: ''+user.email,
+            projects: user.projects
         }
     });
 }
 
-// TODO: Declare globaly accessible funcions like logout
+// click events
 
 
-/// Pages ///
+/// Pages & page specific actions ///
 
 // Index page
 myApp.onPageInit('index', function (page) {
@@ -242,7 +249,7 @@ myApp.onPageInit('register', function (page) {
         }
 
         // build the http request
-        var requestUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users/register';
+        var requestUrl = userServiceUrl+'/register';
         var postdata = {};
         postdata.firstname = firstname;
         postdata.lastname = lastname;
@@ -349,7 +356,6 @@ myApp.onPageInit('projects', function (page) {
     if (localStorage.w7Data && localStorage.w7Data !== ''){
         
         var user = JSON.parse(localStorage.w7Data);
-        console.log('found the user in local storage: '+localStorage.w7Data);
     }
     else {
         // redirect to login
@@ -359,7 +365,6 @@ myApp.onPageInit('projects', function (page) {
 
     // submit logout
     $$('#user-logout').on('click', function () {
-
         // delete user data from local storage
         localStorage.w7Data = '';
 
