@@ -31,10 +31,15 @@ var $$ = Dom7;
 // Add main view
 var mainView = myApp.addView('.view-main');
 
-
 // General tasks on application startup //
 
-// If user is loged in, he goes directly to the projects page
+// warn if no network connection
+if (!navigator.onLine) {
+    myApp.alert('It appears your network connection is down. You need internet connection to use SEMAT App!');
+}
+
+// if user is already loged in
+// he goes directly to the projects page.
 if (localStorage.w7Data && localStorage.w7Data !== ''){
     // debug
     console.log('detected leged in user. moving to projects');
@@ -52,19 +57,66 @@ if (localStorage.w7Data && localStorage.w7Data !== ''){
     });
 }
 
-// click events
+// global logout funcion
+function logout(){
+    console.log('global logout called');
+    // delete user data from local storage
+    localStorage.w7Data = '';
 
+    // move user to home page  
+    mainView.router.load({
+        url: 'index.html',
+        context: {
+            logout: 'true'
+        }
+    });
+}
 
-/// Pages & page specific actions ///
+// load projects page
+function loadProjects(){
+    
+    var user = '';
+    if (localStorage.w7Data && localStorage.w7Data !== ''){
+        user = JSON.parse(localStorage.w7Data);
+    }
+
+    // move user to home page  
+    mainView.router.load({
+        url: 'projects.html',
+        context: {
+            firstname: ''+user.firstname,
+            lastname: ''+user.lastname,
+            email: ''+user.email,
+            projects: user.projects
+        }
+    });
+}
+
+/*** Pages & page specific actions ***/
+
+// Left menu subpage
+myApp.onPageInit('panel-left', function (page) {
+    console.log('left menu page');
+
+    // submit logout
+    $$('#user-logout').on('click', function () {
+        // delete user data from local storage
+        localStorage.w7Data = '';
+
+        // move user to home page  
+        mainView.router.load({
+            url: 'index.html',
+            context: {
+                logout: 'true'
+            }
+        }); 
+    });    
+});
 
 // Index page
 myApp.onPageInit('index', function (page) {
 
     console.log('index page init');
-    
-    if (!navigator.onLine) {
-        myApp.alert('It appears your network connection is down. You need internet connection to use SEMAT App!');
-    }
 });
 
 // Login page
@@ -220,7 +272,7 @@ myApp.onPageInit('login', function (page) {
 
         });
     });
-});
+}).trigger();
 
 // Login page
 myApp.onPageInit('register', function (page) {
