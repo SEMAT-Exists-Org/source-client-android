@@ -77,20 +77,27 @@ function loadProjects(){
     
     var user = '';
     if (localStorage.w7Data && localStorage.w7Data !== ''){
+        
         user = JSON.parse(localStorage.w7Data);
-    }
 
-    // move user to home page  
-    mainView.router.load({
-        url: 'projects.html',
-        context: {
-            firstname: ''+user.firstname,
-            lastname: ''+user.lastname,
-            email: ''+user.email,
-            projects: user.projects
-        }
-    });
+        // move user to home page  
+        mainView.router.load({
+            url: 'projects.html',
+            context: {
+                firstname: ''+user.firstname,
+                lastname: ''+user.lastname,
+                email: ''+user.email,
+                projects: user.projects
+            }
+        });
+    }
+    else {
+        // if user is not loged in
+        // redirect to standard not loged in flow
+        logout();
+    }
 }
+
 
 /*** Pages & page specific actions ***/
 
@@ -415,20 +422,6 @@ myApp.onPageInit('projects', function (page) {
 
     // once user clicks on the specific project
 
-    // submit logout
-    $$('#user-logout').on('click', function () {
-        // delete user data from local storage
-        localStorage.w7Data = '';
-
-        // move user to home page  
-        mainView.router.load({
-            url: 'index.html',
-            context: {
-                logout: 'true'
-            }
-        }); 
-    });
-
     // new project page
     $$('#user-new-project').on('click', function () {
 
@@ -443,6 +436,61 @@ myApp.onPageInit('projects', function (page) {
                 something: 'true'
             }
         });                
+            
+    });
+});
+
+// Create project page
+myApp.onPageInit('createProject', function (page) {
+
+    console.log('createProject page init');
+
+    // read local storage, see what projects
+    // user is assotiated with
+    // If user is loged in, he goes directly to the projects page
+    if (localStorage.w7Data && localStorage.w7Data !== ''){
+        
+        var user = JSON.parse(localStorage.w7Data);
+        console.log(localStorage.w7Data);
+    }
+    else {
+        // redirect to login
+        logout();
+    }
+
+    // once user clicks on the specific project
+
+    // new project page
+    $$('#create-new-project').on('click', function () {
+
+        var projectName = $$('#project-name').val();
+        console.log('creating new project with the name: '+projectName);
+
+        //remove spaces from project name
+        projectName = projectName.replace(/\s+/g, '');
+
+        // new project
+        // build the http request
+        var requestUrl = projectServiceUrl+'/';
+        var postdata = {};
+        postdata.project_name = projectName;
+        postdata.users = [{userid:""}];
+
+
+
+
+
+        // myApp.confirm('A new version is available. Do you want to load it right now?', function () {
+        //         window.location.reload();
+        // });
+
+        // // remove user details from local storage  
+        // mainView.router.load({
+        //     url: 'createProject.html',
+        //     context: {
+        //         something: 'true'
+        //     }
+        // });                
             
     });
 });
