@@ -117,18 +117,27 @@ function loadProjects(){
             error: function(xhr, status ){ // error while communicating with projects service
                 console.log('error from projects service: '+status);
 
-                // we cannot show any projects associated with this user
-                myApp.hideIndicator();
-                // move to projects view
-                mainView.router.load({
-                    url: 'projects.html',
-                    context: {
-                        firstname: ''+user.firstname,
-                        lastname: ''+user.lastname,
-                        email: ''+user.email,
-                        projects: null
-                    }
-                });
+                if (status == 302){
+                    // user token has expired
+                    console.log('user token has expired. asking to relogin');
+                    logout();
+                } else {
+                    // error while communicating with user service
+                    // we cannot show any projects associated with this user
+                    myApp.hideIndicator();
+
+                    myApp.alert('We could not access your project information and your project list might be not up to date.');
+                    // move to projects view
+                    mainView.router.load({
+                        url: 'projects.html',
+                        context: {
+                            firstname: ''+user.firstname,
+                            lastname: ''+user.lastname,
+                            email: ''+user.email,
+                            projects: null
+                        }
+                    });
+                }
             }
         });
     }
