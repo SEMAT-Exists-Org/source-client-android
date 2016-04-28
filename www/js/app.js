@@ -39,22 +39,11 @@ if (!navigator.onLine) {
 }
 
 // if user is already loged in
-// he goes directly to the projects page.
+// we move him to projects flow
 if (localStorage.w7Data && localStorage.w7Data !== ''){
     // debug
-    console.log('detected leged in user. moving to projects');
-
-    var user = JSON.parse(localStorage.w7Data);
-    // move to projects view
-    mainView.router.load({
-        url: 'projects.html',
-        context: {
-            firstname: ''+user.firstname,
-            lastname: ''+user.lastname,
-            email: ''+user.email,
-            projects: user.projects
-        }
-    });
+    console.log('detected loged in user. moving to projects');
+    loadProjects();
 }
 
 // global logout funcion
@@ -81,8 +70,7 @@ function loadProjects(){
         user = JSON.parse(localStorage.w7Data);
 
         // get the project data for the user
-        var requestUrl = projectServiceUrl+'/user/'+user.guid; 
-        console.log(user.token);    
+        var requestUrl = projectServiceUrl+'/user/'+user.guid;     
 
         $$.ajax({
             url: requestUrl,
@@ -106,8 +94,6 @@ function loadProjects(){
                 }
 
                 // if user has any associated projects push them to the view
-                console.log(projectsJSON.projects);
-
                 if (projectsJSON.projects.length > 0){
                     var projectData = projectsJSON.projects;
                 } 
@@ -133,7 +119,6 @@ function loadProjects(){
 
                 // we cannot show any projects associated with this user
                 myApp.hideIndicator();
-
                 // move to projects view
                 mainView.router.load({
                     url: 'projects.html',
@@ -153,7 +138,6 @@ function loadProjects(){
         logout();
     }
 }
-
 
 /*** Pages & page specific actions ***/
 
@@ -178,7 +162,6 @@ myApp.onPageInit('panel-left', function (page) {
 
 // Index page
 myApp.onPageInit('index', function (page) {
-
     console.log('index page init');
 });
 
@@ -551,8 +534,7 @@ myApp.onPageInit('createProject', function (page) {
 
         // show activity indicator
         myApp.showIndicator();
-        
-
+        // http
         $$.ajax({
             url: requestUrl,
             //headers: {"X-Semat-Id":"somestuff","X-Semat-Message":"morestuff"},
@@ -563,8 +545,7 @@ myApp.onPageInit('createProject', function (page) {
             success: function(data, status, xhr){                
                 
                 // nex step is to add the new project to the user profile
-                console.log('new project is created, updating the user info');
-                
+                console.log('new project is created, updating the user info');                
                 var requestUrl = userServiceUrl+'/'+user.guid+'/projects';
 
                 data = JSON.parse(data);
