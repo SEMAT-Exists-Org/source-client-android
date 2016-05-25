@@ -42,11 +42,11 @@ if (!navigator.onLine) {
 // we move him to projects flow
 if (localStorage.w7Data && localStorage.w7Data !== ''){
     // debug
-    console.log('detected loged in user. moving to projects');
+    console.log('detected logged in user. moving to projects');
     loadProjects();
 }
 
-// global logout funcion
+// global logout function
 function logout(){
     console.log('global logout called');
     // delete user data from local storage
@@ -142,15 +142,15 @@ function loadProjects(){
         });
     }
     else {
-        // if user is not loged in
-        // redirect to standard not loged in flow
+        // if user is not logged in
+        // redirect to standard not logged in flow
         logout();
     }
 }
 
 /*** Pages & page specific actions ***/
 
-// Left menu subpage
+// Left menu sub-page
 myApp.onPageInit('panel-left', function (page) {
     console.log('left menu page');
 
