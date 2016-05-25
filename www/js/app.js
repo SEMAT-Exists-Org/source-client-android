@@ -64,6 +64,10 @@ function logout(){
 // load projects page
 function loadProjects(){
     
+    // 1. first we will check if user has associated project data stored locally
+    // 2. if project data is found we are going to display it. if not, validate with project service
+    // 3. load up projects page with relevant project information.
+
     var user = '';
     if (localStorage.w7Data && localStorage.w7Data !== ''){
         
@@ -85,11 +89,11 @@ function loadProjects(){
                 try {                            
                     var projectsJSON = JSON.parse(data);                    
                     if (!projectsJSON.status ||  projectsJSON.status !== 'success') { 
-                        myApp.alert('Login was unsuccessful, we are experiencing internal errors, contact SEMAT team');
+                        myApp.alert('Cannot parse projects data. Internal error, contact SEMAT app team');
                         return
                     }
                 } catch (e) {
-                    myApp.alert('Login was unsuccessful, we are experiencing internal errors, contact SEMAT team');
+                    myApp.alert('Cannot parse projects data. Internal error, contact SEMAT app team');
                     return
                 }
 
@@ -140,6 +144,28 @@ function loadProjects(){
                 }
             }
         });
+    }
+    else {
+        // if user is not logged in
+        // redirect to standard not logged in flow
+        logout();
+    }
+}
+
+// load a single project page
+// from by the project id
+function loadProject(projectId){
+
+    // 1. search user local projects for the project id to this method
+    // 2. load up project page with relevant project information.
+
+    console.log('single project requested with id: '+projectId);
+
+    var user = '';
+    if (localStorage.w7Data && localStorage.w7Data !== ''){
+
+        user = JSON.parse(localStorage.w7Data);
+        console.log(user);
     }
     else {
         // if user is not logged in
@@ -476,8 +502,8 @@ myApp.onPageInit('projects', function (page) {
     console.log('projects page init');
 
     // read local storage, see what projects
-    // user is assotiated with
-    // If user is loged in, he goes directly to the projects page
+    // user is associated with
+    // If user is logged in, he goes directly to the projects page
     if (localStorage.w7Data && localStorage.w7Data !== ''){
         
         var user = JSON.parse(localStorage.w7Data);
