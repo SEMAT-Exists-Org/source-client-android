@@ -2,9 +2,7 @@
 .project
 .idea
 
-.settings
 .DS_Store
-*/.DS_Store
 .sass-cache
 .tmp_*
 /docs
@@ -132,6 +130,3 @@ gen/
 
 # Local configuration file (sdk path, etc)
 local.properties
-
-node_modules
-
