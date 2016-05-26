@@ -73,77 +73,106 @@ function loadProjects(){
         
         user = JSON.parse(localStorage.w7Data);
 
-        // get the project data for the user
-        var requestUrl = projectServiceUrl+'/user/'+user.guid;     
+        // if user has projects, use local project data
+        if (user.projects) {
+            var projectData = user.projects;
 
-        $$.ajax({
-            url: requestUrl,
-            type: "GET",
-            contentType: "application/json",
-            headers: {'token': user.token},
-            success: function(data, status, xhr){
-                // debug
-                console.log('received user projects data: '+data);
+            // debug
+            console.log('user has local projects. using local project data: '+JSON.stringify(projectData));
 
-                // better safe then sorry
-                try {                            
-                    var projectsJSON = JSON.parse(data);                    
-                    if (!projectsJSON.status ||  projectsJSON.status !== 'success') { 
+            // move to projects view
+            myApp.hideIndicator();
+
+            mainView.router.load({
+                url: 'projects.html',
+                context: {
+                    firstname: ''+user.firstname,
+                    lastname: ''+user.lastname,
+                    email: ''+user.email,
+                    projects: projectData
+                }
+            });
+        }
+        else {
+            // if user has no local project data
+            // we ask service for information
+
+            var requestUrl = projectServiceUrl+'/user/'+user.guid;
+
+            $$.ajax({
+                url: requestUrl,
+                type: "GET",
+                contentType: "application/json",
+                headers: {'token': user.token},
+                success: function(data, status, xhr){
+                    // debug
+                    console.log('received user projects data: '+data);
+
+                    // better safe then sorry
+                    try {
+                        var projectsJSON = JSON.parse(data);
+                        if (!projectsJSON.status ||  projectsJSON.status !== 'success') {
+                            myApp.alert('Cannot parse projects data. Internal error, contact SEMAT app team');
+                            return
+                        }
+                    } catch (e) {
                         myApp.alert('Cannot parse projects data. Internal error, contact SEMAT app team');
                         return
                     }
-                } catch (e) {
-                    myApp.alert('Cannot parse projects data. Internal error, contact SEMAT app team');
-                    return
-                }
 
-                // if user has any associated projects push them to the view
-                if (projectsJSON.projects.length > 0){
-                    var projectData = projectsJSON.projects;
-                } 
-                else {
-                    var projectData = null;
-                }
-
-                // move to projects view
-                myApp.hideIndicator();
-
-                mainView.router.load({
-                    url: 'projects.html',
-                    context: {
-                        firstname: ''+user.firstname,
-                        lastname: ''+user.lastname,
-                        email: ''+user.email,
-                        projects: projectData
+                    // if user has any associated projects push them to the view
+                    if (projectsJSON.projects.length > 0){
+                        var projectData = projectsJSON.projects;
                     }
-                });
-            },
-            error: function(xhr, status ){ // error while communicating with projects service
-                console.log('error from projects service: '+status);
+                    else {
+                        var projectData = null;
+                    }
 
-                if (status == 302){
-                    // user token has expired
-                    console.log('user token has expired. asking to relogin');
-                    logout();
-                } else {
-                    // error while communicating with user service
-                    // we cannot show any projects associated with this user
+                    // add the projects to locally stored user profile
+                    var localUser = JSON.parse(localStorage.w7Data);
+                    localUser.projects = projectData;
+                    localStorage.w7Data = JSON.stringify(localUser);
+
+                    // move to projects view
                     myApp.hideIndicator();
 
-                    myApp.alert('We could not access your project information and your project list might be not up to date.');
-                    // move to projects view
                     mainView.router.load({
                         url: 'projects.html',
                         context: {
                             firstname: ''+user.firstname,
                             lastname: ''+user.lastname,
                             email: ''+user.email,
-                            projects: null
+                            projects: projectData
                         }
                     });
+                },
+                error: function(xhr, status ){ // error while communicating with projects service
+                    console.log('error from projects service: '+status);
+
+                    if (status == 302){
+                        // user token has expired
+                        console.log('user token has expired. asking to relogin');
+                        logout();
+                    } else {
+                        // error while communicating with user service
+                        // we cannot show any projects associated with this user
+                        myApp.hideIndicator();
+
+                        myApp.alert('We could not access your project information and your project list might be not up to date.');
+                        // move to projects view
+                        mainView.router.load({
+                            url: 'projects.html',
+                            context: {
+                                firstname: ''+user.firstname,
+                                lastname: ''+user.lastname,
+                                email: ''+user.email,
+                                projects: null
+                            }
+                        });
+                    }
                 }
-            }
-        });
+            });
+        }
     }
     else {
         // if user is not logged in
