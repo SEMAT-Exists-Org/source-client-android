@@ -194,7 +194,35 @@ function loadProject(projectId){
     if (localStorage.w7Data && localStorage.w7Data !== ''){
 
         user = JSON.parse(localStorage.w7Data);
-        console.log(user);
+        //console.log(user);
+
+        // finding if the project exists in the array
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+
+        function findProjectId(project) {
+            return project.projectid === ''+projectId;
+        }
+
+        var selectedProject = user.projects.find(findProjectId);
+
+        if (selectedProject){
+            // project data is now found
+            // navigate to single project page
+            mainView.router.load({
+                url: 'project.html',
+                context: {
+                    project: selectedProject
+                }
+            });
+
+
+        } else {
+            // could't find project by id
+            // something went wrong, needs to sync projects
+            myApp.alert('Cannot retrieve local project information. Please re-sync your projects.');
+            return;
+        }
+
     }
     else {
         // if user is not logged in
