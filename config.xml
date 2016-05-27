@@ -5,10 +5,17 @@
         SEMAT mobile client application, built using Cordova
     </description>
     <content src="index.html" />
+
     <access origin="*" />
+    <allow-intent href="*" />
+    <allow-navigation href="*" />
+
     <preference name="fullscreen" value="false" />
     <preference name="disallowOverscroll" value="true" />
     <preference name="webviewbounce" value="false" />
+
+    <!-- specific plugins -->
+    <plugin name="cordova-plugin-whitelist" spec="1" />
 
     <!-- specific Cordova Android build -->
     <platform name="android">
@@ -16,6 +23,6 @@
 	  <icon src="www/res/android/mdpi.png" density="mdpi" />
 	  <icon src="www/res/android/hdpi.png" density="hdpi" />
 	  <icon src="www/res/android/xhdpi.png" density="xhdpi" />
-     </platform>
+    </platform>
 
 </widget>
