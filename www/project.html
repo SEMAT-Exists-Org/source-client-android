@@ -21,15 +21,51 @@
         
         <li>
           <a href="#" class="item-link smart-select">
-            
+
             <select name="opportunity">
-              <option value="not-identified">Not Identified</option>
+
+              {{#if project.opportunity.notidentified}}
+              <option value="notidentified" selected="selected">Not Identified</option>
+              {{else}}
+              <option value="notidentified">Not Identified</option>
+              {{/if}}
+
+              {{#if project.opportunity.identified}}
               <option value="identified" selected="selected">Identified</option>
-              <option value="solution-needed">Solution Needed</option>
-              <option value="value-established">Value Established</option>
+              {{else}}
+              <option value="identified">Identified</option>
+              {{/if}}
+
+              {{#if project.opportunity.solutionneeded}}
+              <option value="solutionneeded" selected="selected">Solution Needed</option>
+              {{else}}
+              <option value="solutionneeded">Solution Needed</option>
+              {{/if}}
+
+              {{#if project.opportunity.valueestablished}}
+              <option value="valueestablished" selected="selected">Value Established</option>
+              {{else}}
+              <option value="valueestablished">Value Established</option>
+              {{/if}}
+
+              {{#if project.opportunity.viable}}
+              <option value="viable" selected="selected">Viable</option>
+              {{else}}
               <option value="viable">Viable</option>
-              <option value="adressed">Addressed</option>
-              <option value="adressed">Benefit Accuired</option>
+              {{/if}}
+
+              {{#if project.opportunity.adressed}}
+              <option value="adressed" selected="selected">Adressed</option>
+              {{else}}
+              <option value="adressed">Viable</option>
+              {{/if}}
+
+              {{#if project.opportunity.benefitaccuired}}
+              <option value="benefitaccuired" selected="selected">Benefit Accuired</option>
+              {{else}}
+              <option value="benefitaccuired">Benefit Accuired</option>
+              {{/if}}
+
             </select>
 
             <div class="item-content color-green">
@@ -44,13 +80,49 @@
           <a href="#" class="item-link smart-select">
             
             <select name="stakeholders">
-              <option value="not-identified">Not Identified</option>
+
+              {{#if project.stakeholders.notidentified}}
+              <option value="notidentified" selected="selected">Not Identified</option>
+              {{else}}
+              <option value="notidentified">Not Identified</option>
+              {{/if}}
+
+              {{#if project.stakeholders.recognised}}
               <option value="recognised" selected="selected">Recognised</option>
+              {{else}}
+              <option value="recognised">Recognised</option>
+              {{/if}}
+
+              {{#if project.stakeholders.solutionneeded}}
+              <option value="represented" selected="selected">Represented</option>
+              {{else}}
               <option value="represented">Represented</option>
+              {{/if}}
+
+              {{#if project.stakeholders.involved}}
+              <option value="involved" selected="selected">Involved</option>
+              {{else}}
               <option value="involved">Involved</option>
-              <option value="in-agreement">In Agreement</option>
-              <option value="satisfied-for-deployment">Satidfied for Deployment</option>
-              <option value="satisfied-in-use">Satidfied in Use</option>
+              {{/if}}
+
+              {{#if project.stakeholders.inagreement}}
+              <option value="inagreement" selected="selected">In Agreement</option>
+              {{else}}
+              <option value="inagreement">In Agreement</option>
+              {{/if}}
+
+              {{#if project.stakeholders.satisfiedfordeployment}}
+              <option value="satisfiedfordeployment" selected="selected">Satidfied for Deployment</option>
+              {{else}}
+              <option value="satisfiedfordeployment">Satidfied for Deployment</option>
+              {{/if}}
+
+              {{#if project.stakeholders.satisfiedinuse}}
+              <option value="satisfiedinuse" selected="selected">Satidfied in Use</option>
+              {{else}}
+              <option value="satisfiedinuse">Satidfied in Use</option>
+              {{/if}}
+
             </select>
 
             <div class="item-content color-green">
@@ -65,13 +137,49 @@
           <a href="#" class="item-link smart-select">
             
             <select name="requirements">
-              <option value="not-identified">Not Identified</option>
+
+              {{#if project.requirements.notidentified}}
+              <option value="notidentified" selected="selected">Not Identified</option>
+              {{else}}
+              <option value="notidentified">Not Identified</option>
+              {{/if}}
+
+              {{#if project.requirements.conceived}}
               <option value="conceived" selected="selected">Conceived</option>
+              {{else}}
+              <option value="conceived">Conceived</option>
+              {{/if}}
+
+              {{#if project.requirements.bounded}}
+              <option value="bounded" selected="selected">Bounded</option>
+              {{else}}
               <option value="bounded">Bounded</option>
+              {{/if}}
+
+              {{#if project.requirements.coherent}}
+              <option value="coherent" selected="selected">Coherent</option>
+              {{else}}
               <option value="coherent">Coherent</option>
+              {{/if}}
+
+              {{#if project.requirements.acceptable}}
+              <option value="acceptable" selected="selected">Acceptable</option>
+              {{else}}
               <option value="acceptable">Acceptable</option>
+              {{/if}}
+
+              {{#if project.requirements.addressed}}
+              <option value="addressed" selected="selected">Addressed</option>
+              {{else}}
               <option value="addressed">Addressed</option>
+              {{/if}}
+
+              {{#if project.requirements.fulfilled}}
+              <option value="fulfilled" selected="selected">Fulfilled</option>
+              {{else}}
               <option value="fulfilled">Fulfilled</option>
+              {{/if}}
+
             </select>
 
             <div class="item-content color-orange">

@@ -205,6 +205,31 @@ function loadProject(projectId){
 
         var selectedProject = user.projects.find(findProjectId);
 
+        // arrange project data before sending to template
+        // adding the object name dynamically
+        selectedProject.opportunity = {};
+        selectedProject.opportunity[selectedProject.semat_alphas.opportunity] = 'true';
+
+        selectedProject.requirements = {};
+        selectedProject.requirements[selectedProject.semat_alphas.requirements] = 'true';
+
+        selectedProject.stakeholders = {};
+        selectedProject.stakeholders[selectedProject.semat_alphas.stakeholders] = 'true';
+
+        selectedProject.team = {};
+        selectedProject.team[selectedProject.semat_alphas.team] = 'true';
+
+        selectedProject.way_of_working = {};
+        selectedProject.way_of_working[selectedProject.semat_alphas.way_of_working] = 'true';
+
+        selectedProject.work = {};
+        selectedProject.work[selectedProject.semat_alphas.work] = 'true';
+
+        selectedProject.software_system = {};
+        selectedProject.software_system[selectedProject.semat_alphas.software_system] = 'true';
+
+        console.log(selectedProject);
+
         if (selectedProject){
             // project data is now found
             // navigate to single project page
@@ -214,7 +239,6 @@ function loadProject(projectId){
                     project: selectedProject
                 }
             });
-
 
         } else {
             // could't find project by id
