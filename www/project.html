@@ -16,7 +16,6 @@
     </div>
   </div>
   <div class="page-content">
-
     <div class="content-block-title">Project Alphas</div>
     <div class="hidden-from-layout" id="current_projectid">{{project.projectid}}</div>
     
@@ -27,10 +26,10 @@
 
             <select name="opportunity" id="opportunity">
 
-              {{#if project.opportunity.notidentified}}
-              <option value="notidentified" selected="selected">Not Identified</option>
+              {{#if project.opportunity.not_defined}}
+              <option value="not_defined" selected="selected">Not Defined</option>
               {{else}}
-              <option value="notidentified">Not Identified</option>
+              <option value="not_defined">Not Defined</option>
               {{/if}}
 
               {{#if project.opportunity.identified}}
@@ -78,16 +77,15 @@
             </div>
           </a>
         </li>
-
         <li>
           <a href="#" class="item-link smart-select">
             
             <select name="stakeholders" id="stakeholders">
 
-              {{#if project.stakeholders.notidentified}}
-              <option value="notidentified" selected="selected">Not Identified</option>
+              {{#if project.stakeholders.not_defined}}
+              <option value="not_defined" selected="selected">Not Defined</option>
               {{else}}
-              <option value="notidentified">Not Identified</option>
+              <option value="not_defined">Not Defined</option>
               {{/if}}
 
               {{#if project.stakeholders.recognised}}
@@ -135,16 +133,15 @@
             </div>
           </a>
         </li>
-
         <li>
           <a href="#" class="item-link smart-select">
             
             <select name="requirements" id="requirements">
 
-              {{#if project.requirements.notidentified}}
-              <option value="notidentified" selected="selected">Not Identified</option>
+              {{#if project.requirements.not_defined}}
+              <option value="not_defined" selected="selected">Not Defined</option>
               {{else}}
-              <option value="notidentified">Not Identified</option>
+              <option value="not_defined">Not Defined</option>
               {{/if}}
 
               {{#if project.requirements.conceived}}
@@ -192,16 +189,45 @@
             </div>
           </a>
         </li>
-
         <li>
           <a href="#" class="item-link smart-select">            
+
             <select name="team" id="team">
-              <option value="not-identified">Not Identified</option>
+              {{#if project.team.not_defined}}
+              <option value="not_defined" selected="selected">Not Defined</option>
+              {{else}}
+              <option value="not_defined">Not Defined</option>
+              {{/if}}
+
+              {{#if project.team.seeded}}
               <option value="seeded" selected="selected">Seeded</option>
+              {{else}}
+              <option value="seeded">Seeded</option>
+              {{/if}}
+
+              {{#if project.team.formed}}
+              <option value="formed" selected="selected">Formed</option>
+              {{else}}
               <option value="formed">Formed</option>
+              {{/if}}
+
+              {{#if project.team.collaborating}}
+              <option value="collaborating" selected="selected">Collaborating</option>
+              {{else}}
               <option value="collaborating">Collaborating</option>
+              {{/if}}
+
+              {{#if project.team.performing}}
+              <option value="performing" selected="selected">Performing</option>
+              {{else}}
               <option value="performing">Performing</option>
+              {{/if}}
+
+              {{#if project.team.adjourned}}
+              <option value="adjourned" selected="selected">Adjourned</option>
+              {{else}}
               <option value="adjourned">Adjourned</option>
+              {{/if}}
             </select>
 
             <div class="item-content color-blue">
@@ -211,17 +237,46 @@
             </div>
           </a>
         </li>
-
         <li>
           <a href="#" class="item-link smart-select">
             
             <select name="way_of_working" id="way_of_working">
-              <option value="not-identified">Not Identified</option>
-              <option value="principles-established">Principles Established</option>
-              <option value="foundation-established">Foundation Established</option>
-              <option value="in-place">In Place</option>
-              <option value="working-well" selected="selected">Working Well</option>
+
+              {{#if project.way_of_working.not_defined}}
+              <option value="not_defined" selected="selected">Not Defined</option>
+              {{else}}
+              <option value="not_defined">Not Defined</option>
+              {{/if}}
+
+              {{#if project.way_of_working.principles_established}}
+              <option value="principles_established" selected="selected">Principles Established</option>
+              {{else}}
+              <option value="principles_established">Principles Established</option>
+              {{/if}}
+
+              {{#if project.way_of_working.foundation_established}}
+              <option value="foundation_established" selected="selected">Foundation Established</option>
+              {{else}}
+              <option value="foundation_established">Foundation Established</option>
+              {{/if}}
+
+              {{#if project.way_of_working.in_place}}
+              <option value="in_place" selected="selected">In Place</option>
+              {{else}}
+              <option value="in_place">In Place</option>
+              {{/if}}
+
+              {{#if project.way_of_working.working_well}}
+              <option value="working_well" selected="selected">Working Well</option>
+              {{else}}
+              <option value="working_well">Working Well</option>
+              {{/if}}
+
+              {{#if project.way_of_working.retired}}
+              <option value="retired" selected="selected">Retired</option>
+              {{else}}
               <option value="retired">Retired</option>
+              {{/if}}
             </select>
 
             <div class="item-content color-blue">
@@ -231,17 +286,47 @@
             </div>
           </a>
         </li>
-
         <li>
           <a href="#" class="item-link smart-select">
             
             <select name="work" id="work">
-              <option value="not-identified">Not Identified</option>
+
+              {{#if project.work.not_defined}}
+              <option value="not_defined" selected="selected">Not Defined</option>
+              {{else}}
+              <option value="not_defined">Not Defined</option>
+              {{/if}}
+
+              {{#if project.work.initiated}}
               <option value="initiated" selected="selected">Initiated</option>
+              {{else}}
+              <option value="initiated">Initiated</option>
+              {{/if}}
+
+              {{#if project.work.prepared}}
+              <option value="prepared" selected="selected">Prepared</option>
+              {{else}}
               <option value="prepared">Prepared</option>
+              {{/if}}
+
+              {{#if project.work.started}}
+              <option value="started" selected="selected">Started</option>
+              {{else}}
               <option value="started">Started</option>
-              <option value="under-control">Under Controll</option>
+              {{/if}}
+
+              {{#if project.work.under_control}}
+              <option value="under_control" selected="selected">Under Control</option>
+              {{else}}
+              <option value="under_control">Under Control</option>
+              {{/if}}
+
+              {{#if project.work.concluded}}
+              <option value="concluded" selected="selected">Concluded</option>
+              {{else}}
               <option value="concluded">Concluded</option>
+              {{/if}}
+
             </select>
 
             <div class="item-content color-blue">
@@ -251,18 +336,51 @@
             </div>
           </a>
         </li>
-
         <li>
           <a href="#" class="item-link smart-select">
             
             <select name="software_system" id="software_system">
-              <option value="not-identified">Not Identified</option>
-              <option value="architechture-selected">Architechture Selected</option>
+              {{#if project.software_system.not_defined}}
+              <option value="not_defined" selected="selected">Not Defined</option>
+              {{else}}
+              <option value="not_defined">Not Defined</option>
+              {{/if}}
+
+              {{#if project.software_system.architechture_selected}}
+              <option value="architechture_selected" selected="selected">Architechture Selected</option>
+              {{else}}
+              <option value="architechture_selected">Architechture Selected</option>
+              {{/if}}
+
+              {{#if project.software_system.demonstrable}}
+              <option value="demonstrable" selected="selected">Demonstrable</option>
+              {{else}}
               <option value="demonstrable">Demonstrable</option>
+              {{/if}}
+
+              {{#if project.software_system.usable}}
               <option value="usable" selected="selected">Usable</option>
+              {{else}}
+              <option value="usable">Usable</option>
+              {{/if}}
+
+              {{#if project.software_system.ready}}
+              <option value="ready" selected="selected">Ready</option>
+              {{else}}
               <option value="ready">Ready</option>
+              {{/if}}
+
+              {{#if project.software_system.operational}}
+              <option value="operational" selected="selected">Operational</option>
+              {{else}}
               <option value="operational">Operational</option>
+              {{/if}}
+
+              {{#if project.software_system.retired}}
+              <option value="retired" selected="selected">Retired</option>
+              {{else}}
               <option value="retired">Retired</option>
+              {{/if}}
             </select>
 
             <div class="item-content color-orange">
@@ -272,16 +390,11 @@
             </div>
           </a>
         </li>
-
       </ul>
     </div>
-
     <div class="content-block">
       <a href="#" class="button button-raised project-update">Update Project</a>
       <a href="#" class="button button-raised custom-top-margin project-history">Project History</a>
     </div>
-
   </div>
-
-
 </div>

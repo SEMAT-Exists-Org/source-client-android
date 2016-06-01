@@ -8,11 +8,11 @@
 var userCacheTTL = '';
 var apiKey = '';
 
-var projectServiceUrl = 'https://psdev-yt5t7wyhlwjcrfs3sldt4zm6-evals-dev.mbaas1.tom.redhatmobile.com/projects';
-var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
-
-//var projectServiceUrl = 'http://localhost:8002/projects';
-//var userServiceUrl = 'http://localhost:8001/users';
+// TODO: add to config
+//var projectServiceUrl = 'https://psdev-yt5t7wyhlwjcrfs3sldt4zm6-evals-dev.mbaas1.tom.redhatmobile.com/projects';
+//var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
+var projectServiceUrl = 'http://localhost:8002/projects';
+var userServiceUrl = 'http://localhost:8001/users';
 
 
 // Framework7 stuff
@@ -302,7 +302,6 @@ function loadProject(projectId){
         function findProjectId(project) {
             return project.projectid === ''+projectId;
         }
-
         var selectedProject = user.projects.find(findProjectId);
 
         // arrange project data before sending to template
@@ -607,12 +606,8 @@ myApp.onPageInit('projects', function (page) {
     // user is associated with
     // If user is logged in, he goes directly to the projects page
     if (localStorage.w7Data && localStorage.w7Data !== ''){
-
         var user = JSON.parse(localStorage.w7Data);
-    }
-    else {
-        // redirect to login
-    }
+    } else {logout();}
 
     // once user clicks on the specific project
 
@@ -654,6 +649,11 @@ myApp.onPageInit('project', function (page) {
             console.log('comment added by app user: '+data);
 
             // collect current values
+
+            if (localStorage.w7Data && localStorage.w7Data !== ''){
+                var user = JSON.parse(localStorage.w7Data);
+            } else {logout();}
+
             var current_projectid = $$('#current_projectid').text();
             var current_project_name = $$('#current_project_name').text();
             var projectUpdatePayload = {};
@@ -668,7 +668,7 @@ myApp.onPageInit('project', function (page) {
             semat_alphas.software_system = $$('#software_system').val();
 
             var now = moment();
-            history.push({'time': now.format('YYYY-MM-DD HH:mm:ss'), 'message':''+data});
+            history.push({'time': now.format('YYYY-MM-DD HH:mm:ss'), 'message':''+data, 'author':''+user.firstname+' '+user.lastname});
 
             projectUpdatePayload.semat_alphas = semat_alphas;
             projectUpdatePayload.history = history;
@@ -698,17 +698,14 @@ myApp.onPageInit('project', function (page) {
                     myApp.alert(current_project_name+ ' project has been successfully updated!');
                     // reload user local projects
                     reloadProjects();
-
                 },
                 error: function(xhr, status ){
-
                     // we have received response and can hide activity indicator
                     myApp.hideIndicator();
                     myApp.alert('Error while updating the project service. Status code: '+status);
                 }
             });
         });
-
     });
 });
 
