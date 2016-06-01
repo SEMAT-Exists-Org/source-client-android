@@ -112,6 +112,4 @@ module.exports = function (grunt) {
 
   // default if running grunt without task specified
   grunt.registerTask('default', ['serve']);
-
-
 };
