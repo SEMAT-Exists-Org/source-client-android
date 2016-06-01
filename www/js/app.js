@@ -8,12 +8,11 @@
 var userCacheTTL = '';
 var apiKey = '';
 
-//var projectServiceUrl = 'https://psdev-yt5t7wyhlwjcrfs3sldt4zm6-evals-dev.mbaas1.tom.redhatmobile.com/projects';
-//var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
+var projectServiceUrl = 'https://psdev-yt5t7wyhlwjcrfs3sldt4zm6-evals-dev.mbaas1.tom.redhatmobile.com/projects';
+var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
 
-
-var projectServiceUrl = 'http://localhost:8002/projects';
-var userServiceUrl = 'http://localhost:8001/users';
+//var projectServiceUrl = 'http://localhost:8002/projects';
+//var userServiceUrl = 'http://localhost:8001/users';
 
 
 // Framework7 stuff
