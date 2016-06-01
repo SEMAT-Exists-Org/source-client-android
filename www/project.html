@@ -2,11 +2,14 @@
 <div data-page="project" class="page">
   <div class="navbar">
     <div class="navbar-inner">
-      <div class="left"><a href="#" onclick="loadProjects()" class="back link icon-only"><i class="icon icon-back"></i></a></div>
+      <div class="left">
+        <a href="#" onclick="loadProjects()" class="back link icon-only"><i class="icon icon-back"></i></a>
+      </div>
+
       {{#if project}}
-        <div class="center">{{project.projectname}}</div>
+        <div class="center" id="current_project_name">{{project.project_name}}</div>
       {{else}}
-        <div class="center">Project Name</div>
+        <div class="center" id="current_project_name">Project Name</div>
       {{/if}}
 
       <div class="right"><a href="#" class="open-panel link icon-only"><i class="icon icon-bars"></i></a></div>
@@ -15,14 +18,14 @@
   <div class="page-content">
 
     <div class="content-block-title">Project Alphas</div>
+    <div class="hidden-from-layout" id="current_projectid">{{project.projectid}}</div>
     
     <div class="list-block">
       <ul>
-        
         <li>
           <a href="#" class="item-link smart-select">
 
-            <select name="opportunity">
+            <select name="opportunity" id="opportunity">
 
               {{#if project.opportunity.notidentified}}
               <option value="notidentified" selected="selected">Not Identified</option>
@@ -79,7 +82,7 @@
         <li>
           <a href="#" class="item-link smart-select">
             
-            <select name="stakeholders">
+            <select name="stakeholders" id="stakeholders">
 
               {{#if project.stakeholders.notidentified}}
               <option value="notidentified" selected="selected">Not Identified</option>
@@ -136,7 +139,7 @@
         <li>
           <a href="#" class="item-link smart-select">
             
-            <select name="requirements">
+            <select name="requirements" id="requirements">
 
               {{#if project.requirements.notidentified}}
               <option value="notidentified" selected="selected">Not Identified</option>
@@ -192,7 +195,7 @@
 
         <li>
           <a href="#" class="item-link smart-select">            
-            <select name="team">
+            <select name="team" id="team">
               <option value="not-identified">Not Identified</option>
               <option value="seeded" selected="selected">Seeded</option>
               <option value="formed">Formed</option>
@@ -212,7 +215,7 @@
         <li>
           <a href="#" class="item-link smart-select">
             
-            <select name="way of working">
+            <select name="way_of_working" id="way_of_working">
               <option value="not-identified">Not Identified</option>
               <option value="principles-established">Principles Established</option>
               <option value="foundation-established">Foundation Established</option>
@@ -232,7 +235,7 @@
         <li>
           <a href="#" class="item-link smart-select">
             
-            <select name="work">
+            <select name="work" id="work">
               <option value="not-identified">Not Identified</option>
               <option value="initiated" selected="selected">Initiated</option>
               <option value="prepared">Prepared</option>
@@ -252,7 +255,7 @@
         <li>
           <a href="#" class="item-link smart-select">
             
-            <select name="software">
+            <select name="software_system" id="software_system">
               <option value="not-identified">Not Identified</option>
               <option value="architechture-selected">Architechture Selected</option>
               <option value="demonstrable">Demonstrable</option>
@@ -270,12 +273,13 @@
           </a>
         </li>
 
-
       </ul>
     </div>
 
-    <div class="content-block"><a href="#" class="button button-raised">Update Project</a></div>
-
+    <div class="content-block">
+      <a href="#" class="button button-raised project-update">Update Project</a>
+      <a href="#" class="button button-raised custom-top-margin project-history">Project History</a>
+    </div>
 
   </div>
 

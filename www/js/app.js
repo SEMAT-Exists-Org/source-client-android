@@ -8,11 +8,12 @@
 var userCacheTTL = '';
 var apiKey = '';
 
-var projectServiceUrl = 'https://psdev-yt5t7wyhlwjcrfs3sldt4zm6-evals-dev.mbaas1.tom.redhatmobile.com/projects';
-var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
+//var projectServiceUrl = 'https://psdev-yt5t7wyhlwjcrfs3sldt4zm6-evals-dev.mbaas1.tom.redhatmobile.com/projects';
+//var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
 
-//var projectServiceUrl = 'http://localhost:8002/projects';
-//var userServiceUrl = 'http://localhost:8001/users';
+
+var projectServiceUrl = 'http://localhost:8002/projects';
+var userServiceUrl = 'http://localhost:8001/users';
 
 
 // Framework7 stuff
@@ -98,6 +99,7 @@ function loadProjects(){
             // we ask service for information
 
             var requestUrl = projectServiceUrl+'/user/'+user.guid;
+            console.log('user token: '+user.token);
 
             $$.ajax({
                 url: requestUrl,
@@ -133,6 +135,8 @@ function loadProjects(){
                     localUser.projects = projectData;
                     localStorage.w7Data = JSON.stringify(localUser);
 
+                    console.log(projectData);
+
                     // move to projects view
                     myApp.hideIndicator();
 
@@ -152,12 +156,13 @@ function loadProjects(){
                     if (status == 302){
                         // user token has expired
                         console.log('user token has expired. asking to relogin');
+                        myApp.hideIndicator();
+                        myApp.alert('We could not access your project information.. Contact SEMAT team');
                         logout();
                     } else {
                         // error while communicating with user service
                         // we cannot show any projects associated with this user
                         myApp.hideIndicator();
-
                         myApp.alert('We could not access your project information and your project list might be not up to date.');
                         // move to projects view
                         mainView.router.load({
@@ -173,6 +178,102 @@ function loadProjects(){
                 }
             });
         }
+    }
+    else {
+        // if user is not logged in
+        // redirect to standard not logged in flow
+        logout();
+    }
+}
+
+// reload user projects
+function reloadProjects(){
+
+    // reloads user projects from the user + projects services
+
+    var user = '';
+    if (localStorage.w7Data && localStorage.w7Data !== ''){
+
+        user = JSON.parse(localStorage.w7Data);
+
+        var requestUrl = projectServiceUrl+'/user/'+user.guid;
+        console.log('releading projects for user: '+user.guid);
+
+        $$.ajax({
+            url: requestUrl,
+            type: "GET",
+            contentType: "application/json",
+            headers: {'token': user.token},
+            success: function(data, status, xhr){
+                // debug
+                console.log('received user projects data: '+data);
+
+                // better safe then sorry
+                try {
+                    var projectsJSON = JSON.parse(data);
+                    if (!projectsJSON.status ||  projectsJSON.status !== 'success') {
+                        myApp.alert('Cannot parse projects data. Internal error, contact SEMAT app team');
+                        return
+                    }
+                } catch (e) {
+                    myApp.alert('Cannot parse projects data. Internal error, contact SEMAT app team');
+                    return
+                }
+
+                // if user has any associated projects push them to the view
+                if (projectsJSON.projects.length > 0){
+                    var projectData = projectsJSON.projects;
+                }
+                else {
+                    var projectData = null;
+                }
+
+                // add the projects to locally stored user profile
+                var localUser = JSON.parse(localStorage.w7Data);
+                localUser.projects = projectData;
+                localStorage.w7Data = JSON.stringify(localUser);
+
+                // move to projects view
+                myApp.hideIndicator();
+
+                mainView.router.load({
+                    url: 'projects.html',
+                    context: {
+                        firstname: ''+user.firstname,
+                        lastname: ''+user.lastname,
+                        email: ''+user.email,
+                        projects: projectData
+                    }
+                });
+            },
+            error: function(xhr, status ){ // error while communicating with projects service
+                console.log('error from projects service: '+status);
+
+                if (status == 302){
+                    // user token has expired
+                    console.log('user token has expired. asking to relogin');
+                    myApp.hideIndicator();
+                    myApp.alert('We could not access your project information.. Contact SEMAT team');
+                    logout();
+                }
+                else {
+                    // error while communicating with user service
+                    // we cannot show any projects associated with this user
+                    myApp.hideIndicator();
+                    myApp.alert('We could not access your project information and your project list might be not up to date.');
+                    // move to projects view
+                    mainView.router.load({
+                        url: 'projects.html',
+                        context: {
+                            firstname: ''+user.firstname,
+                            lastname: ''+user.lastname,
+                            email: ''+user.email,
+                            projects: null
+                        }
+                    });
+                }
+            }
+        });
     }
     else {
         // if user is not logged in
@@ -357,85 +458,6 @@ myApp.onPageInit('login', function (page) {
                 localStorage.w7Data = JSON.stringify(userData);
 
                 loadProjects();
-
-
-                // user is now loged in and validated
-                // we need to retrieve the project information for this user
-                // this means another request to the projects service
-                
-                //var requestUrl = projectServiceUrl+'/user/'+responseJSON.guid;      
-                // $$.ajax({
-                //     url: requestUrl,
-                //     type: "GET",
-                //     contentType: "application/json",
-                //     success: function(data, status, xhr){
-                //         // debug
-                //         console.log('received user projects data: '+data);
-
-                //         // better safe then sorry
-                //         try {                            
-                //             var projectsJSON = JSON.parse(data);                    
-                //             if (!projectsJSON.status ||  projectsJSON.status !== 'success') { 
-                //                 myApp.alert('Login was unsuccessful, we are experiencing internal errors, contact SEMAT team');
-                //                 return
-                //             }
-                //         } catch (e) {
-                //             myApp.alert('Login was unsuccessful, we are experiencing internal errors, contact SEMAT team');
-                //             return
-                //         }
-
-                //         // get the projects belonging to user
-                //         var projectData = projectsJSON.projects;
-
-                //         // finalise user data for local storage
-                //         userData.projects = projectData || null;
-                //         localStorage.w7Data = JSON.stringify(userData);
-                //         // debug
-                //         console.log('stored user object: '+JSON.stringify(userData));
-
-                //         // about to do redirect to projects page
-                //         // hide activity indicator
-                //         myApp.hideIndicator();
-
-                //         // move to projects view
-                //         mainView.router.load({
-                //             url: 'projects.html',
-                //             context: {
-                //                 firstname: ''+userData.firstname,
-                //                 lastname: ''+userData.lastname,
-                //                 email: ''+userData.email,
-                //                 projects: userData.projects,
-                //                 newLogin: 'true'
-                //             }
-                //         });
-                //     },
-                //     error: function(xhr, status ){ // error while communicating with projects service
-                //         console.log('user projects error: '+status);
-
-                //         // we will still log the user in as user service gave us ok
-                //         // however, we cannot show any projects associated with this user
-
-                //         // finalise user data for local storage
-                //         userData.projects = null;
-                //         localStorage.w7Data = JSON.stringify(userData);
-                //         // debug
-                //         console.log('stored user object: '+JSON.stringify(userData));
-
-                //         myApp.hideIndicator();
-
-                //         // move to projects view
-                //         mainView.router.load({
-                //             url: 'projects.html',
-                //             context: {
-                //                 firstname: ''+userData.firstname,
-                //                 lastname: ''+userData.lastname,
-                //                 email: ''+userData.email,
-                //                 projects: userData.projects,
-                //                 newLogin: 'true'
-                //             }
-                //         });
-                //     }
-                // });          
             }, 
 
             error: function(xhr, status ){
@@ -454,7 +476,7 @@ myApp.onPageInit('login', function (page) {
     });
 }).trigger();
 
-// Login page
+// Registration page
 myApp.onPageInit('register', function (page) {
 
     console.log('register page init');
@@ -586,7 +608,7 @@ myApp.onPageInit('projects', function (page) {
     // user is associated with
     // If user is logged in, he goes directly to the projects page
     if (localStorage.w7Data && localStorage.w7Data !== ''){
-        
+
         var user = JSON.parse(localStorage.w7Data);
     }
     else {
@@ -602,14 +624,92 @@ myApp.onPageInit('projects', function (page) {
         //         window.location.reload();
         // });
 
-        // remove user details from local storage  
+        // remove user details from local storage
         mainView.router.load({
             url: 'createProject.html',
             context: {
                 something: 'true'
             }
-        });                
-            
+        });
+
+    });
+});
+
+// Projects page
+myApp.onPageInit('project', function (page) {
+
+    console.log('single project page init');
+
+    // project update button clicked
+    // - capture the app user comment for project update
+    // - collect the data about the current project status
+    // - update the project on project service
+    // - update local project details
+
+    $$('.project-update').on('click', function () {
+
+        // myApp.confirm('A new version is available. Do you want to load it right now?', function () {
+        //         window.location.reload();
+        // });
+        myApp.prompt('Please add the comment before updating the project', function (data) {
+            console.log('comment added by app user: '+data);
+
+            // collect current values
+            var current_projectid = $$('#current_projectid').text();
+            var current_project_name = $$('#current_project_name').text();
+            var projectUpdatePayload = {};
+            var history = [];
+            var semat_alphas = {};
+            semat_alphas.opportunity = $$('#opportunity').val();
+            semat_alphas.requirements = $$('#requirements').val();
+            semat_alphas.stakeholders = $$('#stakeholders').val();
+            semat_alphas.team = $$('#team').val();
+            semat_alphas.way_of_working = $$('#way_of_working').val();
+            semat_alphas.work = $$('#work').val();
+            semat_alphas.software_system = $$('#software_system').val();
+
+            var now = moment();
+            history.push({'time': now.format('YYYY-MM-DD HH:mm:ss'), 'message':''+data});
+
+            projectUpdatePayload.semat_alphas = semat_alphas;
+            projectUpdatePayload.history = history;
+
+            // debug
+            console.log('updating project with id: '+current_projectid);
+            //console.log(projectUpdatePayload);
+
+            // we have all data for the request
+            myApp.showIndicator();
+
+            // http comms
+            var requestUrl = projectServiceUrl+'/'+current_projectid;
+
+            $$.ajax({
+                url: requestUrl,
+                //headers: {"X-Semat-Id":"somestuff","X-Semat-Message":"morestuff"},
+                type: "PUT",
+                contentType: "application/json",
+                data: JSON.stringify(projectUpdatePayload),
+
+                success: function(data, status, xhr){
+
+                    console.log('project updated: '+data);
+                    myApp.hideIndicator();
+
+                    myApp.alert(current_project_name+ ' project has been successfully updated!');
+                    // reload user local projects
+                    reloadProjects();
+
+                },
+                error: function(xhr, status ){
+
+                    // we have received response and can hide activity indicator
+                    myApp.hideIndicator();
+                    myApp.alert('Error while updating the project service. Status code: '+status);
+                }
+            });
+        });
+
     });
 });
 

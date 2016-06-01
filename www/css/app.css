@@ -1,5 +1,13 @@
 /* custom */
 
+.custom-top-margin{
+  margin-top: 7px;
+}
+
+.hidden-from-layout{
+  display: none;
+}
+
 .navbar-fixed.toolbar-fixed .page-content{
   padding-top: 80px;
 }
