@@ -1,0 +1,47 @@
+
+<div data-page="project" class="page">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="left">
+        <a href="#" onclick="loadProject('{{project.projectid}}')" class="back link icon-only"><i class="icon icon-back"></i></a>
+      </div>
+
+      {{#if project}}
+        <div class="center" id="current_project_name">{{project.project_name}}</div>
+      {{else}}
+        <div class="center" id="current_project_name">Project Name</div>
+      {{/if}}
+
+      <div class="right"><a href="#" class="open-panel link icon-only"><i class="icon icon-bars"></i></a></div>
+    </div>
+  </div>
+  <div class="page-content">
+    <div class="hidden-from-layout" id="current_projectid">{{project.projectid}}</div>
+
+    {{#if project.history}}
+
+      {{#each project.history}}
+        <div class="card">
+          <div class="card-content">
+            <div class="card-content-inner">
+              <p class="color-gray">
+                {{author}} {{time}}
+              </p>
+              <p class="">{{message}}</p>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+
+    {{else}}
+    <div class="card">
+      <div class="card-content">
+        <div class="card-content-inner">
+          <p class="">This project has no history. Something went wrong, contact SEMAT team.</p>
+        </div>
+      </div>
+    </div>
+    {{/if}}
+
+  </div>
+</div>
