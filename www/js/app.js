@@ -9,10 +9,10 @@ var userCacheTTL = '';
 var apiKey = '';
 
 // TODO: add to config
-//var projectServiceUrl = 'https://psdev-yt5t7wyhlwjcrfs3sldt4zm6-evals-dev.mbaas1.tom.redhatmobile.com/projects';
-//var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
-var projectServiceUrl = 'http://localhost:8002/projects';
-var userServiceUrl = 'http://localhost:8001/users';
+var projectServiceUrl = 'https://psdev-yt5t7wyhlwjcrfs3sldt4zm6-evals-dev.mbaas1.tom.redhatmobile.com/projects';
+var userServiceUrl = 'https://psdev-yt5t7w6ayhgkm527grvejshb-evals-dev.mbaas1.tom.redhatmobile.com/users';
+//var projectServiceUrl = 'http://localhost:8002/projects';
+//var userServiceUrl = 'http://localhost:8001/users';
 
 
 // Framework7 stuff
@@ -345,6 +345,44 @@ function loadProject(projectId){
             myApp.alert('Cannot retrieve local project information. Please re-sync your projects.');
             return;
         }
+
+    }
+    else {
+        // if user is not logged in
+        // redirect to standard not logged in flow
+        logout();
+    }
+}
+
+// load history of the single project
+function loadProjectHistory(projectId){
+
+    // 1. find user local projects with the project id
+    // 2. load up the project history page with relevant history (if exists)
+
+    console.log('loading project history for id: '+projectId);
+
+    var user = '';
+    if (localStorage.w7Data && localStorage.w7Data !== ''){
+
+        user = JSON.parse(localStorage.w7Data);
+        console.log(user);
+
+        // finding if the project exists in the array
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find
+
+        function findProjectId(project) {
+            return project.projectid === ''+projectId;
+        }
+        var selectedProject = user.projects.find(findProjectId);
+
+        // load project history template
+        mainView.router.load({
+            url: 'project-history.html',
+            context: {
+                project: selectedProject
+            }
+        });
 
     }
     else {
@@ -707,6 +745,7 @@ myApp.onPageInit('project', function (page) {
             });
         });
     });
+    
 });
 
 // Create project page
