@@ -592,9 +592,9 @@ myApp.onPageInit('register', function (page) {
                 userData.lastname = responseJSON.lastname;
                 userData.email = responseJSON.email;
                 userData.token = responseJSON.token;
+                userData.guid = responseJSON.guid;
                 userData.timestamp = new Date().getTime();
                 localStorage.w7Data = JSON.stringify(userData);
-
 
                 mainView.router.load({
                     url: 'projects.html',
@@ -604,8 +604,7 @@ myApp.onPageInit('register', function (page) {
                         email: ''+responseJSON.email,
                         newRegistration: 'true'
                     }
-                });                
-            
+                });
             }, 
 
             error: function(xhr, status ){
@@ -745,7 +744,7 @@ myApp.onPageInit('project', function (page) {
             });
         });
     });
-    
+
 });
 
 // Create project page
@@ -811,7 +810,11 @@ myApp.onPageInit('createProject', function (page) {
                     
                     success: function(data, status, xhr){
                         // debug
-                        console.log('successfully updated user profile : '+data);
+                        console.log('successfully updated user service profile : '+data);
+
+                        // re-load user projects
+                        reloadProjects();
+
                     },
                     error: function(xhr, status ){
                         console.log(status);
@@ -850,4 +853,7 @@ myApp.onPageInit('createProject', function (page) {
     });
 });
 
-
+// Project history page hooks
+myApp.onPageInit('project-history', function (page) {
+    console.log('project-history');
+});
