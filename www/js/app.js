@@ -855,5 +855,5 @@ myApp.onPageInit('createProject', function (page) {
 
 // Project history page hooks
 myApp.onPageInit('project-history', function (page) {
-    console.log('project-history');
+    console.log('project-history page init');
 });
