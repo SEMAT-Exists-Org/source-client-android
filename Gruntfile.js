@@ -87,8 +87,7 @@ module.exports = function (grunt) {
     // Empties folders to start fresh
     clean: {
       server: '.tmp'
-    }    
-
+    }  
   });
 
   // main task for serving HTML5 application 

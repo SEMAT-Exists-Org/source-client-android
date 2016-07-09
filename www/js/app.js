@@ -61,7 +61,7 @@ function logout(){
     });
 }
 
-// load projects page
+// global load projects
 function loadProjects(){
     
     // 1. first we will check if user has associated project data stored locally
@@ -185,12 +185,17 @@ function loadProjects(){
     }
 }
 
-// reload user projects
-function reloadProjects(){
+// global method
+// reloads user projects from remote services.
+// if supplied the specific project id it will reload projects from the remote services first
+// and will attempt to load the specific project page  
 
-    // reloads user projects from the user + projects services
+function reloadProjects(projectId){
 
+    // preparing variables
     var user = '';
+    var projectId = typeof projectId !== 'undefined' ?  projectId : '';
+
     if (localStorage.w7Data && localStorage.w7Data !== ''){
 
         user = JSON.parse(localStorage.w7Data);
@@ -235,15 +240,24 @@ function reloadProjects(){
                 // move to projects view
                 myApp.hideIndicator();
 
-                mainView.router.load({
-                    url: 'projects.html',
-                    context: {
-                        firstname: ''+user.firstname,
-                        lastname: ''+user.lastname,
-                        email: ''+user.email,
-                        projects: projectData
-                    }
-                });
+                console.log('I want to load the single project with id: '+projectId);
+                // if projectId was supplied we will relead the specific project
+                if (projectId !== ''){
+
+                    loadProject(projectId);              
+                } 
+                else { // load the main projects page
+
+                    mainView.router.load({
+                        url: 'projects.html',
+                        context: {
+                            firstname: ''+user.firstname,
+                            lastname: ''+user.lastname,
+                            email: ''+user.email,
+                            projects: projectData
+                        }
+                    });
+                }
             },
             error: function(xhr, status ){ // error while communicating with projects service
                 console.log('error from projects service: '+status);
@@ -342,7 +356,7 @@ function loadProject(projectId){
         } else {
             // could't find project by id
             // something went wrong, needs to sync projects
-            myApp.alert('Cannot retrieve local project information. Please re-sync your projects.');
+            myApp.alert('Cannot retrieve local project information. Please logout and login again in order to sync your projects information.');
             return;
         }
 
@@ -392,7 +406,7 @@ function loadProjectHistory(projectId){
     }
 }
 
-/*** Pages & page specific actions ***/
+/*** Pages & page specific page actions ***/
 
 // Left menu sub-page
 myApp.onPageInit('panel-left', function (page) {
@@ -734,7 +748,7 @@ myApp.onPageInit('project', function (page) {
 
                     myApp.alert(current_project_name+ ' project has been successfully updated!');
                     // reload user local projects
-                    reloadProjects();
+                    reloadProjects(current_projectid);
                 },
                 error: function(xhr, status ){
                     // we have received response and can hide activity indicator
