@@ -46,6 +46,23 @@ if (localStorage.w7Data && localStorage.w7Data !== ''){
     loadProjects();
 }
 
+// returns the MD5 hash of currentlly loged in users email
+// or some random email hash ir cannot find the user
+function currentUserEmailGravatarHash(){
+
+    var user = '';
+    if (localStorage.w7Data && localStorage.w7Data !== ''){        
+        user = JSON.parse(localStorage.w7Data);
+    } 
+    else {
+        user.email = 'random@email.com';
+    }
+
+    var gravatarHash = 'https://www.gravatar.com/avatar/'+md5(''+user.email);
+    console.log('user gravatar hash: '+gravatarHash);
+    return gravatarHash;
+}
+
 // global logout function
 function logout(){
     console.log('global logout called');
@@ -69,6 +86,8 @@ function loadProjects(){
     // 3. load up projects page with relevant project information.
 
     var user = '';
+    var gravatarUrl = currentUserEmailGravatarHash();
+
     if (localStorage.w7Data && localStorage.w7Data !== ''){
         
         user = JSON.parse(localStorage.w7Data);
@@ -89,6 +108,7 @@ function loadProjects(){
                     firstname: ''+user.firstname,
                     lastname: ''+user.lastname,
                     email: ''+user.email,
+                    gravatarUrl: ''+gravatarUrl,
                     projects: projectData
                 }
             });
@@ -194,6 +214,7 @@ function reloadProjects(projectId){
 
     // preparing variables
     var user = '';
+    var gravatarUrl = currentUserEmailGravatarHash();
     var projectId = typeof projectId !== 'undefined' ?  projectId : '';
 
     if (localStorage.w7Data && localStorage.w7Data !== ''){
@@ -254,6 +275,7 @@ function reloadProjects(projectId){
                             firstname: ''+user.firstname,
                             lastname: ''+user.lastname,
                             email: ''+user.email,
+                            gravatarUrl: ''+gravatarUrl,
                             projects: projectData
                         }
                     });
