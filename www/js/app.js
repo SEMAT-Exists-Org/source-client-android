@@ -848,6 +848,8 @@ myApp.onPageInit('createProject', function (page) {
                         // debug
                         console.log('successfully updated user service profile : '+data);
 
+                        // done
+                        myApp.hideIndicator();
                         // re-load user projects
                         reloadProjects();
 
@@ -859,11 +861,6 @@ myApp.onPageInit('createProject', function (page) {
                         myApp.alert('Sorry, cannot update user profile at the moment');
                     }
                 });
-
-                // done
-                myApp.hideIndicator();
-                // load up user projects
-                loadProjects();
             },
             error: function(xhr, status ){
                 console.log(status);
