@@ -23,6 +23,7 @@
     <div class="hidden-from-layout" id="current_projectid">123</div>
     {{/if}}
     
+    {{#if project}}
     <div class="list-block">
       <ul>
         <li>
@@ -396,8 +397,13 @@
         </li>
       </ul>
     </div>
+    {{/if}}
+
+
     <div class="content-block">
+      {{#if project}}
       <a href="#" class="button button-raised project-update">Update Project</a>
+      {{/if}}
       
       {{#if project}}
       <a href="#" onclick="loadProjectHistory('{{project.projectid}}')" class="button button-raised custom-top-margin project-history">Project History</a>
